@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="EL_RANCHO.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Pass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">r4nch021</Value>
+    </Setting>
+    <Setting Name="User" Type="System.String" Scope="User">
+      <Value Profile="(Default)">El Rancho</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
