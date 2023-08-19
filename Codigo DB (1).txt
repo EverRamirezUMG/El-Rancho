@@ -1,0 +1,262 @@
+
+Procedimientos almacenados
+//
+//Mostrar datos en C#
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarSalario (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_salario;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarCliente (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_cliente;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarInventario (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_inventario;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarFactura (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_factura;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarEmpleados (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_empleado;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarDesayuno (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_desayuno;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarCena (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_cena;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarBebidas (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_bebida;
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE seleccionarAlmuerzo (registro out SYS_REFCURSOR)
+as 
+Begin
+ open registro FOR SELECT * FROM pro_almuerzo;
+ END;
+//
+//
+//  Insertar Datos en C#|Oracle
+// 
+//
+create or replace NONEDITIONABLE PROCEDURE insertarDesayuno(nom varchar2, prec number)
+as 
+Begin
+ insert into pro_desayuno (nombre, precio)values (nom, prec);
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE insertarCena(nob varchar2, prei varchar2)
+as 
+Begin
+ insert into pro_cena (nombre, precio)values (nob, prei);
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE insertarBebida(nome varchar2, preb varchar2)
+as 
+Begin
+ insert into pro_bebida (nombre, precio)values (nome, preb);
+ END;
+//
+create or replace NONEDITIONABLE PROCEDURE insertarAlmuerzo(nomb varchar2, preci varchar2)
+as 
+Begin
+ insert into pro_almuerzo (nombre, precio)values (nomb, preci);
+
+//
+// Disparadores Triggers
+//
+//
+create or replace NONEDITIONABLE trigger pro_almuerzo_trig
+BEFORE insert on pro_almuerzo 
+for each row
+begin 
+select AlmuerzoInsert.NEXTVAL 
+INTO :new.id
+from dual;
+end;
+
+//
+create sequence AlmuerzoInsert start with 3000;
+
+//
+create or replace NONEDITIONABLE trigger pro_bebida_trig
+BEFORE insert on pro_bebida
+for each row
+begin 
+select BebidaInsert.NEXTVAL 
+INTO :new.id
+from dual;
+end;
+//
+create sequence BebidaInsert start with 4000;
+
+//
+create or replace NONEDITIONABLE trigger pro_Cena_trig
+BEFORE insert on pro_cena
+for each row
+begin 
+select CenaInsert.NEXTVAL 
+INTO :new.id
+from dual;
+end;
+//
+create sequence CenaInsert start with 5000;
+
+//
+create or replace NONEDITIONABLE trigger pro_desayuno_trig
+BEFORE insert on pro_desayuno 
+for each row
+begin 
+select DesayunoInsert.NEXTVAL 
+INTO :new.id
+from dual;
+end;
+//
+create sequence DesayunoInsert start with 6000;
+
+ END;
+//
+
+
+
+//
+// Modificar Datos c#|Oracle
+// Procedimineto almacenado
+//
+//
+create or replace NONEDITIONABLE PROCEDURE modificarDesayuno (id IN number , nomd in varchar2, pred in NUMBER)
+AS
+vid NUMBER := id;
+vnomd VARCHAR2(30) := nomd;
+vpred NUMBER := pred;
+
+BEGIN 
+ UPDATE pro_desayuno set nombre = vnomd, precio = vpred WHERE id = vid;
+  EXCEPTION 
+   WHEN NO_DATA_FOUND THEN
+   NULL;
+   WHEN OTHERS THEN
+   RAISE;
+END modificarDesayuno;
+//
+//C#
+// Modificar Desayuno
+ ora.Open();
+            OracleCommand comando = new OracleCommand("modificarDesayuno", ora);
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Parameters.Add("id", OracleType.Number).Value = Convert.ToInt32(TBid.Text);
+            comando.Parameters.Add("nomd", OracleType.VarChar).Value = TBnombre.Text;
+            comando.Parameters.Add("pred", OracleType.Number).Value = Convert.ToInt32(TBprecio.Text);
+            comando.ExecuteNonQuery();
+            MessageBox.Show("Desayuno Actulizado");
+            ora.Close();
+//
+//
+
+create or replace NONEDITIONABLE PROCEDURE modificarAlmuerzo (ida IN number , noma in varchar2, prea in NUMBER)
+AS
+vida NUMBER := ida;
+vnoma VARCHAR2(30) := noma;
+vprea NUMBER := prea;
+
+BEGIN 
+ UPDATE pro_almuerzo set nombre = vnoma, precio = vprea WHERE id = vida;
+  EXCEPTION 
+   WHEN NO_DATA_FOUND THEN
+   NULL;
+   WHEN OTHERS THEN
+   RAISE;
+END modificarAlmuerzo;
+//
+//C#
+// Modificar almuerzo
+            ora.Open();
+            OracleCommand comando = new OracleCommand("modificarAlmuerzo", ora);
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Parameters.Add("ida", OracleType.Number).Value = Convert.ToInt32(TBid.Text);
+            comando.Parameters.Add("noma", OracleType.VarChar).Value = TBnombre.Text;
+            comando.Parameters.Add("prea", OracleType.Number).Value = Convert.ToInt32(TBprecio.Text);
+            comando.ExecuteNonQuery();
+            MessageBox.Show("Desayuno Actulizado");
+            ora.Close();
+//
+//
+
+ create or replace NONEDITIONABLE PROCEDURE modificarCena (idc IN number , nomc in varchar2, prec in NUMBER)
+AS
+vidc NUMBER := idc;
+vnomc VARCHAR2(30) := nomc;
+vprec NUMBER := prec;
+
+BEGIN 
+ UPDATE pro_cena set nombre = vnomc, precio = vprec WHERE id = vidc;
+  EXCEPTION 
+   WHEN NO_DATA_FOUND THEN
+   NULL;
+   WHEN OTHERS THEN
+   RAISE;
+END modificarCena;
+//
+//C#
+// Modificar Cena
+ ora.Open();
+            OracleCommand comando = new OracleCommand("modificarCena", ora);
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Parameters.Add("idc", OracleType.Number).Value = Convert.ToInt32(TBid.Text);
+            comando.Parameters.Add("nomc", OracleType.VarChar).Value = TBnombre.Text;
+            comando.Parameters.Add("prec", OracleType.Number).Value = Convert.ToInt32(TBprecio.Text);
+            comando.ExecuteNonQuery();
+            MessageBox.Show("Desayuno Actulizado");
+            ora.Close();
+//
+//
+create or replace NONEDITIONABLE PROCEDURE modificarBebida (idb IN number , nomb in varchar2, preb in NUMBER)
+AS
+vidb NUMBER := idb;
+vnomb VARCHAR2(30) := nomb;
+vpreb NUMBER := preb;
+
+BEGIN 
+ UPDATE pro_bebida set nombre = vnomb, precio = vpreb WHERE id = vidb;
+  EXCEPTION 
+   WHEN NO_DATA_FOUND THEN
+   NULL;
+   WHEN OTHERS THEN
+   RAISE;
+END modificarBebida;
+//
+//C# 
+// Modificar Bebida
+ora.Open();
+            OracleCommand comando = new OracleCommand("modificarBebida", ora);
+            comando.CommandType = System.Data.CommandType.StoredProcedure;
+            comando.Parameters.Add("idb", OracleType.Number).Value = Convert.ToInt32(TBid.Text);
+            comando.Parameters.Add("nomb", OracleType.VarChar).Value = TBnombre.Text;
+            comando.Parameters.Add("preb", OracleType.Number).Value = Convert.ToInt32(TBprecio.Text);
+            comando.ExecuteNonQuery();
+            MessageBox.Show("Desayuno Actulizado");
+            ora.Close();
+
+
